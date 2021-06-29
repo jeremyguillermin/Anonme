@@ -1,0 +1,4 @@
+subprocess.run
+simple-term-menu
+termcolor
+requests
