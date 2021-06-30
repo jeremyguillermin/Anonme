@@ -1,8 +1,8 @@
 from simple_term_menu import TerminalMenu
 from termcolor import colored
 import subprocess
-import os,shutil
 import requests
+import os
 
 
 def MainMenu():
