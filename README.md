@@ -2,7 +2,7 @@
 Run all your network traffic through Tor and choose the nodes you want to enter, exit and exclude. 
 Tool developed for GNU/Linux
 
-![Peek 30-06-2021 05-06](https://user-images.githubusercontent.com/85474922/123896379-bc59f800-d961-11eb-90dc-1ab67ae30de1.gif)
+![Peek 30-06-2021 05-16](https://user-images.githubusercontent.com/85474922/123896780-7f423580-d962-11eb-939b-e782e2e93ece.gif)
 
 # Install
 sudo apt install tor
