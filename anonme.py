@@ -38,10 +38,10 @@ def MainMenu():
                 Quit()
                 break
             else:
-                print(colored('\nInvalide choise. Enter 1-6', 'red'))
+                print(colored('\nInvalide choise. Enter 1-5', 'red'))
                 MainMenu()
         except ValueError:
-            print(colored('\nInvalide choise. Enter 1-6', 'red'))
+            print(colored('\nInvalide choise. Enter 1-5', 'red'))
     exit
 
 
@@ -142,10 +142,10 @@ def Torrc_Configuration():
                     MainMenu()
 
                 else:
-                    print(colored('\nInvalide choise. Enter 1-4', 'red'))
+                    print(colored('\nInvalide choise. Enter 1-6', 'red'))
                     Entry_Exit_Exclude()
             except ValueError:
-                print(colored('\nInvalide choise. Enter 1-4', 'red'))
+                print(colored('\nInvalide choise. Enter 1-6', 'red'))
         exit
 
     def Chose_Nodes1():
@@ -189,7 +189,7 @@ def Torrc_Configuration():
             fichier.write(' StrictNodes 1')
             fichier.close()
             
-            anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()        
 
     def Chose_Nodes2():
@@ -233,7 +233,7 @@ def Torrc_Configuration():
             fichier.write(' StrictNodes 1')
             fichier.close()
             
-            anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()
 
     def Chose_Nodes3():
@@ -276,7 +276,7 @@ def Torrc_Configuration():
             fichier.write(str(('\nExcludeNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.close()
             
-            anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()
     
     def Start_Torrc_Config():
@@ -292,8 +292,9 @@ def Torrc_Configuration():
         print(colored(Start_Tor_Banner, 'magenta'))
         subprocess.call(shifting, shell=True)
         print(colored('[+] Configuration file is on : /etc/tor ', 'green'))
+        print(colored('[+] Now go to the menu to launch Tor', 'green'))
         
-        anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
         Entry_Exit_Exclude()
 
     def Remove_Torrc_Config():
@@ -306,7 +307,7 @@ def Torrc_Configuration():
         subprocess.call(Remove_Torrc, shell=True)
         print(colored('[+] Configuration file is Remove ...', 'green'))
 
-        anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
         Entry_Exit_Exclude()
 
 
