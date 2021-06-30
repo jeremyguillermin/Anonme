@@ -52,7 +52,7 @@ def MainMenu():
 def Start_Tor():
     subprocess.call(['clear'], shell=True)
     print(colored(Start_Tor_Banner, 'magenta'))
-    subprocess.run(['./bash_cmd/Start_Tor.sh'], shell=True)
+    subprocess.call(['./bash_cmd/Start_Tor.sh'], shell=True)
     print(colored('[+] Tor Service is On ...', 'green'))
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
@@ -62,7 +62,7 @@ def Start_Tor():
 def Stop_Tor():
     subprocess.call(['clear'], shell=True)
     print(colored(Stop_Tor_Banner, 'magenta'))
-    subprocess.run(['./bash_cmd/Stop_Tor.sh'], shell=True)
+    subprocess.call(['./bash_cmd/Stop_Tor.sh'], shell=True)
     print(colored('[+] Tor service is OFF ...', 'green'))
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
