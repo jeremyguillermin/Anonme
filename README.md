@@ -3,6 +3,7 @@ run all your network traffic through tor and choose the nodes you want to enter,
 
 # Install
 sudo apt install tor
+
 pip3 install -r requiments.txt
 
 # Start the tool 
