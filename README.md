@@ -6,7 +6,7 @@ This tool allows you to route all your network traffic through Tor. You can choo
 # Requiments
 sudo, tor, iptables 
 
-python3 : subprocess.run, simple-term-menu, termcolor, requests
+python3 : subprocess, simple-term-menu, termcolor, requests
 
 # Install
 sudo apt install tor
