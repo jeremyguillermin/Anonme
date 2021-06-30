@@ -9,9 +9,13 @@ sudo, tor, iptables
 python3 : subprocess, simple-term-menu, termcolor, requests
 
 # Install
-sudo apt install tor
+git clone https://github.com/x0Dsj/anonme
 
-pip3 install -r requiments.txt
+cd anonme
+
+chmod +x install.sh
+
+./install.sh
 
 # Start the tool 
 python3 anonme.py
