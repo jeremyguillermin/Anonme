@@ -1,5 +1,5 @@
 # Anonme
-run all your network traffic through Tor and choose the nodes you want to enter, exit and exclude. tool developed for linux
+Run all your network traffic through Tor and choose the nodes you want to enter, exit and exclude. Tool developed for linux
 
 # Install
 sudo apt install tor
