@@ -251,7 +251,7 @@ def Torrc_Configuration():
             menu_entry_indices = terminal_menu.show()
             print(colored('\nYour Exclude Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
-            fichier = open("data/torrc.config.sh", "a")
+            fichier = open("data/torrc.config", "a")
             fichier.write(str(('\nExcludeNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.close()
             anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
