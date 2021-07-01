@@ -1,21 +1,22 @@
 from simple_term_menu import TerminalMenu
+from fake_useragent import UserAgent
 from termcolor import colored
 import subprocess
 import requests
+import json
 import os
 
 
 def MainMenu():
     subprocess.call(['clear'])
     print(colored(Main_Menu_Banner, 'magenta'))
-    print(colored('[+] Checking IP ...\n', 'green'))
-    print(colored(requests.get('http://httpbin.org/ip').text, 'green'))
-    print(colored('1. Start Tor', 'yellow'))
-    print(colored('2. Stop Tor', 'yellow'))
-    print(colored('3. Chose your Tor Configuration', 'yellow'))
-    print(colored('4. Information about your relay (press q to quit)', 'yellow'))
-    print(colored('5. Check your IP ', 'yellow'))
-    print(colored('6. Quit\n', 'yellow'))
+    print(colored('1. Check your IP ', 'yellow'))
+    print(colored('2. Start all in Tor', 'yellow'))
+    print(colored('3. Back to the Clearnet', 'yellow'))
+    print(colored('4. Chose your Tor Configuration', 'yellow'))
+    print(colored('5. Use Clearnet and Search .Onion link', 'yellow'))
+    print(colored('6. Information about your relay (press q to quit)', 'yellow'))
+    print(colored('7. Quit\n', 'yellow'))
     
     
     while True:
@@ -24,42 +25,50 @@ def MainMenu():
             selection = int(input("Enter Choice : "))
             
             if selection == 1:
-                Start_Tor()
-                break
-            
-            elif selection == 2:
-                Stop_Tor()
-                break
-            elif selection == 3:
-                Torrc_Configuration()
-                break
-
-            elif selection == 4:
-                Relay_Information()
-                break
-
-            elif selection == 5:
                 Check_IP()
                 break
             
-            elif selection == 6:
-                Quit()
+            elif selection == 2:
+                Start_Tor()
+                break
+            elif selection == 3:
+                Stop_Tor()
+                break
+
+            elif selection == 4:
+                Torrc_Configuration()
+                break
+
+            elif selection == 5:
+                Search_Onion()
                 break
             
+            elif selection == 6:
+                Relay_Information()
+                break
+            
+            elif selection == 7:
+                Quit()
+                break
+
             else:
-                print(colored('\nInvalide choise. Enter 1-6', 'red'))
+                print(colored('\nInvalide choise. Enter 1-7', 'red'))
                 MainMenu()
         
         except ValueError:
-            print(colored('\nInvalide choise. Enter 1-6', 'red'))
+            print(colored('\nInvalide choise. Enter 1-7', 'red'))
     exit
 
 
 def Start_Tor():
     subprocess.call(['clear'], shell=True)
     print(colored(Start_Tor_Banner, 'magenta'))
+    print(colored('\n[+] Checking TOR... ', 'green' ))
+    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
     subprocess.call(['./bash_cmd/Start_Tor.sh'], shell=True)
-    print(colored('[+] Tor Service is On ...', 'green'))
+    print(colored('\n[+] Tor Service is On ...', 'green'))
+    print(colored('\n[+] Checking TOR... ', 'green' ))
+    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
     MainMenu()
@@ -68,8 +77,12 @@ def Start_Tor():
 def Stop_Tor():
     subprocess.call(['clear'], shell=True)
     print(colored(Stop_Tor_Banner, 'magenta'))
+    print(colored('\n[+] Checking TOR... ', 'green' ))
+    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
     subprocess.call(['./bash_cmd/Stop_Tor.sh'], shell=True)
-    print(colored('[+] Tor service is OFF ...', 'green'))
+    print(colored('\n[+] Tor service is OFF ...', 'green'))
+    print(colored('\n[+] Checking TOR... ', 'green' ))
+    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
     subprocess.call(['clear'], shell=True)
@@ -271,9 +284,11 @@ def Torrc_Configuration():
 def Check_IP():
     subprocess.call(['clear'], shell=True)
     print(colored(Check_IP_Banner, 'magenta'))
-    subprocess.call(['./bash_cmd/check_ip.sh'], shell=True)
-    print('\n')
-    anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
+    print(colored('\n[+] Checking TOR... ', 'green' ))
+    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
+    print(colored('\n[+] Checking IP ...\n', 'green'))
+    print(colored(requests.get('http://httpbin.org/ip').text, 'green'))
+    anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
     subprocess.call(['clear'], shell=True)
     MainMenu()
 
@@ -283,6 +298,39 @@ def Relay_Information():
     subprocess.call(['./bash_cmd/Relay_Information.sh'], shell=True)
     subprocess.call(['clear'], shell=True)
     MainMenu()
+
+def Search_Onion():
+    
+    # Dark Search
+
+    subprocess.call(['clear'], shell=True)
+    print(colored(Search_Onion_Banner, 'magenta'))
+    print('\n')
+    print(colored('To put a space between two words use : %20', 'yellow'))
+    XQuery = input(colored("Please set your query : ", 'yellow'))
+    print('\n')
+
+    r = requests.get('https://darksearch.io/api/search?query=' + XQuery)
+    data_json = r.text
+    json_data = json.loads(data_json)
+
+    #pages = json_data['last_page']
+    #print(pages)
+    for p in range(1,20):
+        for i in range(0,2):
+            try:
+                url = 'https://darksearch.io/api/search?query=' + XQuery + '&page=' + str(p)
+                r = requests.get(url)
+                data_json = r.text
+                json_data = json.loads(data_json)
+                print(colored(json_data['data'][i]['link'], 'green'))
+            except Exception as excep:
+                print(excep)
+    
+    anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
+    subprocess.call(['clear'], shell=True)
+    MainMenu()               
+
 
 def Quit():
     subprocess.call(['clear'], shell=True)
@@ -307,12 +355,12 @@ Twitter : @JeremGuillermin
 '''
 
 Entry_Nodes_Banner = r'''
-   ______            _____          ______      __            
-  / ____/___  ____  / __(_)___ _   / ____/___  / /________  __
- / /   / __ \/ __ \/ /_/ / __ `/  / __/ / __ \/ __/ ___/ / / /
-/ /___/ /_/ / / / / __/ / /_/ /  / /___/ / / / /_/ /  / /_/ / 
-\____/\____/_/ /_/_/ /_/\__, /  /_____/_/ /_/\__/_/   \__, /  
-                       /____/                        /____/   
+   ______            _____                        __  _           
+  / ____/___  ____  / __(_)___ ___  ___________ _/ /_(_)___  ____ 
+ / /   / __ \/ __ \/ /_/ / __ `/ / / / ___/ __ `/ __/ / __ \/ __ \
+/ /___/ /_/ / / / / __/ / /_/ / /_/ / /  / /_/ / /_/ / /_/ / / / /
+\____/\____/_/ /_/_/ /_/\__, /\__,_/_/   \__,_/\__/_/\____/_/ /_/ 
+                       /____/                                     
 '''
 
 Start_Tor_Banner = r'''
