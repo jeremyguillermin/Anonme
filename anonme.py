@@ -13,8 +13,9 @@ def MainMenu():
     print(colored('1. Start Tor', 'yellow'))
     print(colored('2. Stop Tor', 'yellow'))
     print(colored('3. Chose your Tor Configuration', 'yellow'))
-    print(colored('4. Check your IP ', 'yellow'))
-    print(colored('5. Quit\n', 'yellow'))
+    print(colored('4. Information about your relay (press q to quit)', 'yellow'))
+    print(colored('5. Check your IP ', 'yellow'))
+    print(colored('6. Quit\n', 'yellow'))
     
     
     while True:
@@ -32,20 +33,25 @@ def MainMenu():
             elif selection == 3:
                 Torrc_Configuration()
                 break
+
             elif selection == 4:
+                Relay_Information()
+                break
+
+            elif selection == 5:
                 Check_IP()
                 break
             
-            elif selection == 5:
+            elif selection == 6:
                 Quit()
                 break
             
             else:
-                print(colored('\nInvalide choise. Enter 1-5', 'red'))
+                print(colored('\nInvalide choise. Enter 1-6', 'red'))
                 MainMenu()
         
         except ValueError:
-            print(colored('\nInvalide choise. Enter 1-5', 'red'))
+            print(colored('\nInvalide choise. Enter 1-6', 'red'))
     exit
 
 
@@ -272,7 +278,14 @@ def Check_IP():
     MainMenu()
 
 
+def Relay_Information():
+    subprocess.call(['clear'], shell=True)
+    subprocess.call(['./bash_cmd/Relay_Information.sh'], shell=True)
+    subprocess.call(['clear'], shell=True)
+    MainMenu()
+
 def Quit():
+    subprocess.call(['clear'], shell=True)
     exit()
 
 
