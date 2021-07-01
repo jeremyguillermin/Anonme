@@ -14,7 +14,7 @@ def MainMenu():
     print(colored('2. Start all in Tor', 'yellow'))
     print(colored('3. Back to the Clearnet', 'yellow'))
     print(colored('4. Chose your Tor Configuration', 'yellow'))
-    print(colored('5. Use Clearnet and Search .Onion link', 'yellow'))
+    print(colored('5. Use Tor and Search .Onion link', 'yellow'))
     print(colored('6. Information about your relay (press q to quit)', 'yellow'))
     print(colored('7. Quit\n', 'yellow'))
     
