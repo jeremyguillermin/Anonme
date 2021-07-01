@@ -1,10 +1,16 @@
 # Anonme
 This tool allows you to route all your network traffic through Tor. You can choose which countries you want to enter, exit, and which ones you want to exclude. Tool developed for Debian
 
-![Peek 30-06-2021 05-27](https://user-images.githubusercontent.com/85474922/123897610-f9bf8500-d963-11eb-98af-c87a839f98ff.gif)
+# Functions
+you can configure your Tor nodes.
+![Peek 01-07-2021 22-22](https://user-images.githubusercontent.com/85474922/124185238-fdb1eb00-daba-11eb-94f1-f1f6575425d6.gif)
+you can search for .onion sites. at the moment you can't search them with Tor enabled but it will be possible soon.
+![Peek 01-07-2021 21-55](https://user-images.githubusercontent.com/85474922/124182401-15877000-dab7-11eb-8046-a2bd2f8952c1.gif)
+you can view your Tor relay information.
+![Peek 01-07-2021 22-17](https://user-images.githubusercontent.com/85474922/124184622-24bbed00-daba-11eb-916e-7acc4a3a80a8.gif)
 
 # Requiments
-sudo, tor, iptables 
+sudo, tor, iptables, nyx
 
 python3 : subprocess, simple-term-menu, termcolor, requests
 
