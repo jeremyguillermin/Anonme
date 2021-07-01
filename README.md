@@ -4,9 +4,9 @@ This tool allows you to route all your network traffic through Tor. You can choo
 # Functions
 you can configure your Tor nodes.
 ![Peek 01-07-2021 22-22](https://user-images.githubusercontent.com/85474922/124185238-fdb1eb00-daba-11eb-94f1-f1f6575425d6.gif)
-you can search for .onion sites. at the moment you can't search them with Tor enabled but it will be possible soon.
+search for .onion sites. at the moment you can't search them with Tor enabled but it will be possible soon.
 ![Peek 01-07-2021 21-55](https://user-images.githubusercontent.com/85474922/124182401-15877000-dab7-11eb-8046-a2bd2f8952c1.gif)
-you can view your Tor relay information.
+view your Tor relay information.
 ![Peek 01-07-2021 22-17](https://user-images.githubusercontent.com/85474922/124184622-24bbed00-daba-11eb-916e-7acc4a3a80a8.gif)
 
 # Requiments
