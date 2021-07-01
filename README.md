@@ -2,11 +2,11 @@
 This tool allows you to route all your network traffic through Tor. You can choose which countries you want to enter, exit, and which ones you want to exclude. Tool developed for Debian
 
 # Functions
- - You can configure your Tor nodes
+ - Chose your Tor Configuration
 
- - Search for .onion sites 
+ - Use Tor and Search .Onion link
 
- - View your Tor relay information
+ - See your Tor relay information 
 
 # Requiments
 sudo, tor, iptables, nyx
