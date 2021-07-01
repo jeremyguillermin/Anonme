@@ -310,7 +310,7 @@ def Search_Onion():
     XQuery = input(colored("Please set your query : ", 'yellow'))
     print('\n')
 
-    r = requests.get('https://darksearch.io/api/search?query=' + XQuery)
+    r = requests.get('http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery)
     data_json = r.text
     json_data = json.loads(data_json)
 
@@ -319,7 +319,7 @@ def Search_Onion():
     for p in range(1,20):
         for i in range(0,2):
             try:
-                url = 'https://darksearch.io/api/search?query=' + XQuery + '&page=' + str(p)
+                url = 'http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery + '&page=' + str(p)
                 r = requests.get(url)
                 data_json = r.text
                 json_data = json.loads(data_json)
