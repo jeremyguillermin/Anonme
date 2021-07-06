@@ -65,13 +65,9 @@ def MainMenu():
 def Start_Tor():
 
     bash_Start_Tor = """\
-        # destinations you don't want routed through Tor
+
         NON_TOR="192.168.1.0/24 192.168.0.0/24"
-
-        # the UID Tor runs as
         readonly TOR_UID="$(id -u debian-tor)"
-
-        # Tor's TransPort
         TRANS_PORT="9040"
 
         sudo service tor stop
@@ -208,7 +204,7 @@ def Torrc_Configuration():
             print(colored('\nYour Entry Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
 
-            fichier = open("data/torrc.config", "a")
+            fichier = open("torrc.config", "a")
             fichier.write(str(('EntryNodes ' + ", ".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.write(' StrictNodes 1')
             fichier.close()
@@ -250,7 +246,7 @@ def Torrc_Configuration():
             print(colored('\nYour Exit Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
 
-            fichier = open("data/torrc.config", "a")
+            fichier = open("torrc.config", "a")
             fichier.write(str(('\nExitNodes ' + ", ".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.write(' StrictNodes 1')
             fichier.close()  
@@ -292,9 +288,8 @@ def Torrc_Configuration():
             print(colored('\nYour Exclude Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
 
-            fichier = open("data/torrc.config", "a")
+            fichier = open("torrc.config", "a")
             fichier.write(str(('\nExcludeNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
-            fichier.write(' StrictNodes 1')
             fichier.close()
 
             anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
@@ -305,8 +300,13 @@ def Torrc_Configuration():
 
         bash_Shifting = """\
             sudo mv -n /etc/tor/torrc /etc/tor/torrc.original
-            sudo mv data/torrc.config /etc/tor/torrc
-            cp data/torrc.start data/torrc.config"""
+            echo "VirtualAddrNetwork 10.192.0.0/10" >> torrc
+            echo "AutomapHostsOnResolve 1" >> torrc
+            echo "TransPort 9040" >> torrc
+            echo "DNSPort 53" >> torrc
+            cat torrc.config >> torrc
+            rm -rf torrc.config
+            sudo mv -n torrc /etc/tor/torrc"""
 
         subprocess.call(['clear'], shell=True)
         print(colored(Start_Tor_Banner, 'magenta'))
