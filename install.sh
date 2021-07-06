@@ -1,8 +1,7 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt install tor python3 python3-pip nyx
-chmod +x bash_cmd/*
+sudo apt install -y tor python3 python3-pip nyx
 pip3 install subprocess.run 
 pip3 install simple-term-menu 
 pip3 install termcolor 
