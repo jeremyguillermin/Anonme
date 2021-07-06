@@ -1,5 +1,4 @@
 from simple_term_menu import TerminalMenu
-from fake_useragent import UserAgent
 from termcolor import colored
 import subprocess
 import requests
@@ -8,8 +7,10 @@ import os
 
 
 def MainMenu():
+
     subprocess.call(['clear'])
     print(colored(Main_Menu_Banner, 'magenta'))
+    
     print(colored('1. Check your IP ', 'yellow'))
     print(colored('2. Start all in Tor', 'yellow'))
     print(colored('3. Back to the Clearnet', 'yellow'))
@@ -18,71 +19,105 @@ def MainMenu():
     print(colored('6. Information about your relay (press q to quit)', 'yellow'))
     print(colored('7. Quit\n', 'yellow'))
     
-    
     while True:
+    
         try:
-            
+    
             selection = int(input("Enter Choice : "))
-            
+    
             if selection == 1:
                 Check_IP()
                 break
-            
+    
             elif selection == 2:
                 Start_Tor()
                 break
+    
             elif selection == 3:
                 Stop_Tor()
                 break
-
+    
             elif selection == 4:
                 Torrc_Configuration()
                 break
-
+    
             elif selection == 5:
                 Search_Onion()
                 break
-            
+    
             elif selection == 6:
                 Relay_Information()
                 break
-            
+    
             elif selection == 7:
                 Quit()
                 break
-
+    
             else:
                 print(colored('\nInvalide choise. Enter 1-7', 'red'))
                 MainMenu()
-        
+    
         except ValueError:
             print(colored('\nInvalide choise. Enter 1-7', 'red'))
+    
     exit
 
-
 def Start_Tor():
+
+    bash_Start_Tor = """\
+        # destinations you don't want routed through Tor
+        NON_TOR="192.168.1.0/24 192.168.0.0/24"
+
+        # the UID Tor runs as
+        readonly TOR_UID="$(id -u debian-tor)"
+
+        # Tor's TransPort
+        TRANS_PORT="9040"
+
+        sudo service tor stop
+
+        sudo iptables -F
+        sudo iptables -t nat -F
+
+        sudo iptables -t nat -A OUTPUT -m owner --uid-owner $TOR_UID -j RETURN
+        sudo iptables -t nat -A OUTPUT -p udp --dport 53 -j REDIRECT --to-ports 53
+        for NET in $NON_TOR 127.0.0.0/9 127.128.0.0/10; do
+            sudo iptables -t nat -A OUTPUT -d $NET -j RETURN
+        done
+        sudo iptables -t nat -A OUTPUT -p tcp --syn -j REDIRECT --to-ports $TRANS_PORT
+
+        sudo iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+        for NET in $NON_TOR 127.0.0.0/8; do
+            sudo iptables -A OUTPUT -d $NET -j ACCEPT
+        done
+        sudo iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
+        sudo iptables -A OUTPUT -j REJECT
+        sudo service tor restart"""
+
     subprocess.call(['clear'], shell=True)
     print(colored(Start_Tor_Banner, 'magenta'))
-    print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
-    subprocess.call(['./bash_cmd/Start_Tor.sh'], shell=True)
+    
+    subprocess.call(bash_Start_Tor, shell=True)
     print(colored('\n[+] Tor Service is On ...', 'green'))
-    print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
+    
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
     MainMenu()
 
 
 def Stop_Tor():
+    
+    bash_Stop_Tor = """\
+        sudo iptables -F
+        sudo iptables -t nat -F
+        sudo service tor stop"""
+
     subprocess.call(['clear'], shell=True)
     print(colored(Stop_Tor_Banner, 'magenta'))
-    print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
-    subprocess.call(['./bash_cmd/Stop_Tor.sh'], shell=True)
+    
+    subprocess.call(bash_Stop_Tor, shell=True)
     print(colored('\n[+] Tor service is OFF ...', 'green'))
-    print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
+    
     print('\r\n')
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
     subprocess.call(['clear'], shell=True)
@@ -90,9 +125,12 @@ def Stop_Tor():
 
 
 def Torrc_Configuration():
+
     def Entry_Exit_Exclude():
+
         subprocess.call(['clear'], shell=True)
         print(colored(Entry_Nodes_Banner, 'magenta'))
+
         print(colored('1. Chose your Entry Nodes', 'yellow'))
         print(colored('2. Chose your Exit Nodes', 'yellow'))
         print(colored('3. Chose your Exclude Nodes', 'yellow'))
@@ -101,10 +139,11 @@ def Torrc_Configuration():
         print(colored('6. Back to menu\n', 'yellow'))
 
         while True:
+
             try:
-                
+
                 selection = int(input("Enter Choice : "))
-                
+
                 if selection == 1:
                     Entry_Nodes()
                     break
@@ -130,15 +169,15 @@ def Torrc_Configuration():
                 else:
                     print(colored('\nInvalide choise. Enter 1-6', 'red'))
                     Entry_Exit_Exclude()
-            
+
             except ValueError:
                 print(colored('\nInvalide choise. Enter 1-6', 'red'))
+
         exit
 
-    
     def Entry_Nodes():
-            terminal_menu = TerminalMenu(
-                [
+
+            terminal_menu = TerminalMenu([
         "ASCENSION ISLAND : {ac}", "AFGHANISTAN : {af}", "ALAND : {ax}", "ALBANIA : {al}", "ALGERIA : {dz}", "ANDORRA : {ad}", "ANGOLA : {ao}", "ANGUILLA : {ai}", "ANTARCTICA : {aq}", "ANTIGUA AND BARBUDA : {ag}", "ARGENTINA REPUBLIC : {ar}", "ARMENIA : {am}", "ARUBA : {aw}", "AUSTRALIA : {au}", "AUSTRIA : {at}", "AZERBAIJAN : {az}",
         "BAHAMAS : {bs}", "BAHRAIN : {bh}", "BANGLADESH : {bd}", "BARBADOS : {bb}", "BELARUS : {by}", "BELGIUM : {be}", "BELIZE : {bz}", "BENIN : {bj}", "BERMUDA : {bm}", "BHUTAN : {bt}", "BOLIVIA : {bo}", "BOSNIA AND HERZEGOVINA : {ba}", "BOTSWANA : {bw}", "BOUVET ISLAND : {bv}", "BRAZIL : {br}", "BRITISH INDIAN OCEAN TERR : {io}", "BRITISH VIRGIN ISLANDS : {vg}", "BRUNEI DARUSSALAM : {bn}", "BULGARIA : {bg}", "BURKINA FASO : {bf}", "BURUNDI : {bi}",         
         "CAMBODIA : {kh}", "CAMEROON : {cm}", "CANADA : {ca}", "CAPE VERDE : {cv}", "CAYMAN ISLANDS : {ky}", "CENTRAL AFRICAN REPUBLIC : {cf}", "CHAD : {td}", "CHILE : {cl}", "PEOPLE'S REPUBLIC OF CHINA : {cn}", "CHRISTMAS ISLANDS : {cx}", "COCOS ISLANDS : {cc}", "COLOMBIA : {co}", "COMORAS : {km}", "CONGO : {cg}", "CONGO (DEMOCRATIC REPUBLIC) : {cd}", "COOK ISLANDS : {ck}", "COSTA RICA : {cr}", "COTE D IVOIRE : {ci}", "CROATIA : {hr}", "CUBA : {cu}", "CYPRUS : {cy}", "CZECH REPUBLIC : {cz}",             
@@ -163,23 +202,24 @@ def Torrc_Configuration():
         "VANUATU : {vu}", "VATICAN CITY STATE : {va}", "VENEZUELA : {ve}", "VIET NAM : {vn}", "VIRGIN ISLANDS (USA) : {vi}", 
         "WALLIS AND FUTUNA ISLANDS : {wf}", "WESTERN SAHARA : {eh}",            
         "YEMEN : {ye}",
-        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"
-                ], multi_select=True, show_multi_select_hint=True,)
-            
+        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"], multi_select=True, show_multi_select_hint=True)
+
             menu_entry_indices = terminal_menu.show()
             print(colored('\nYour Entry Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
+
             fichier = open("data/torrc.config", "a")
-            fichier.write(str(('\nEntryNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
+            fichier.write(str(('EntryNodes ' + ", ".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.write(' StrictNodes 1')
             fichier.close()
-            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
+
+            anykay = input(colored("Enter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()        
 
     
     def Exit_Nodes():
-            terminal_menu = TerminalMenu(
-                [
+
+            terminal_menu = TerminalMenu([
         "ASCENSION ISLAND : {ac}", "AFGHANISTAN : {af}", "ALAND : {ax}", "ALBANIA : {al}", "ALGERIA : {dz}", "ANDORRA : {ad}", "ANGOLA : {ao}", "ANGUILLA : {ai}", "ANTARCTICA : {aq}", "ANTIGUA AND BARBUDA : {ag}", "ARGENTINA REPUBLIC : {ar}", "ARMENIA : {am}", "ARUBA : {aw}", "AUSTRALIA : {au}", "AUSTRIA : {at}", "AZERBAIJAN : {az}",
         "BAHAMAS : {bs}", "BAHRAIN : {bh}", "BANGLADESH : {bd}", "BARBADOS : {bb}", "BELARUS : {by}", "BELGIUM : {be}", "BELIZE : {bz}", "BENIN : {bj}", "BERMUDA : {bm}", "BHUTAN : {bt}", "BOLIVIA : {bo}", "BOSNIA AND HERZEGOVINA : {ba}", "BOTSWANA : {bw}", "BOUVET ISLAND : {bv}", "BRAZIL : {br}", "BRITISH INDIAN OCEAN TERR : {io}", "BRITISH VIRGIN ISLANDS : {vg}", "BRUNEI DARUSSALAM : {bn}", "BULGARIA : {bg}", "BURKINA FASO : {bf}", "BURUNDI : {bi}",         
         "CAMBODIA : {kh}", "CAMEROON : {cm}", "CANADA : {ca}", "CAPE VERDE : {cv}", "CAYMAN ISLANDS : {ky}", "CENTRAL AFRICAN REPUBLIC : {cf}", "CHAD : {td}", "CHILE : {cl}", "PEOPLE'S REPUBLIC OF CHINA : {cn}", "CHRISTMAS ISLANDS : {cx}", "COCOS ISLANDS : {cc}", "COLOMBIA : {co}", "COMORAS : {km}", "CONGO : {cg}", "CONGO (DEMOCRATIC REPUBLIC) : {cd}", "COOK ISLANDS : {ck}", "COSTA RICA : {cr}", "COTE D IVOIRE : {ci}", "CROATIA : {hr}", "CUBA : {cu}", "CYPRUS : {cy}", "CZECH REPUBLIC : {cz}",             
@@ -204,23 +244,24 @@ def Torrc_Configuration():
         "VANUATU : {vu}", "VATICAN CITY STATE : {va}", "VENEZUELA : {ve}", "VIET NAM : {vn}", "VIRGIN ISLANDS (USA) : {vi}", 
         "WALLIS AND FUTUNA ISLANDS : {wf}", "WESTERN SAHARA : {eh}",            
         "YEMEN : {ye}",
-        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"
-                ], multi_select=True, show_multi_select_hint=True,)
-            
+        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"], multi_select=True, show_multi_select_hint=True)
+
             menu_entry_indices = terminal_menu.show()
             print(colored('\nYour Exit Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
+
             fichier = open("data/torrc.config", "a")
-            fichier.write(str(('\nExitNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
+            fichier.write(str(('\nExitNodes ' + ", ".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.write(' StrictNodes 1')
             fichier.close()  
+
             anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()
 
     
     def Exclude_Nodes():
-            terminal_menu = TerminalMenu(
-                [
+
+            terminal_menu = TerminalMenu([
         "ASCENSION ISLAND : {ac}", "AFGHANISTAN : {af}", "ALAND : {ax}", "ALBANIA : {al}", "ALGERIA : {dz}", "ANDORRA : {ad}", "ANGOLA : {ao}", "ANGUILLA : {ai}", "ANTARCTICA : {aq}", "ANTIGUA AND BARBUDA : {ag}", "ARGENTINA REPUBLIC : {ar}", "ARMENIA : {am}", "ARUBA : {aw}", "AUSTRALIA : {au}", "AUSTRIA : {at}", "AZERBAIJAN : {az}",
         "BAHAMAS : {bs}", "BAHRAIN : {bh}", "BANGLADESH : {bd}", "BARBADOS : {bb}", "BELARUS : {by}", "BELGIUM : {be}", "BELIZE : {bz}", "BENIN : {bj}", "BERMUDA : {bm}", "BHUTAN : {bt}", "BOLIVIA : {bo}", "BOSNIA AND HERZEGOVINA : {ba}", "BOTSWANA : {bw}", "BOUVET ISLAND : {bv}", "BRAZIL : {br}", "BRITISH INDIAN OCEAN TERR : {io}", "BRITISH VIRGIN ISLANDS : {vg}", "BRUNEI DARUSSALAM : {bn}", "BULGARIA : {bg}", "BURKINA FASO : {bf}", "BURUNDI : {bi}",         
         "CAMBODIA : {kh}", "CAMEROON : {cm}", "CANADA : {ca}", "CAPE VERDE : {cv}", "CAYMAN ISLANDS : {ky}", "CENTRAL AFRICAN REPUBLIC : {cf}", "CHAD : {td}", "CHILE : {cl}", "PEOPLE'S REPUBLIC OF CHINA : {cn}", "CHRISTMAS ISLANDS : {cx}", "COCOS ISLANDS : {cc}", "COLOMBIA : {co}", "COMORAS : {km}", "CONGO : {cg}", "CONGO (DEMOCRATIC REPUBLIC) : {cd}", "COOK ISLANDS : {ck}", "COSTA RICA : {cr}", "COTE D IVOIRE : {ci}", "CROATIA : {hr}", "CUBA : {cu}", "CYPRUS : {cy}", "CZECH REPUBLIC : {cz}",             
@@ -245,113 +286,162 @@ def Torrc_Configuration():
         "VANUATU : {vu}", "VATICAN CITY STATE : {va}", "VENEZUELA : {ve}", "VIET NAM : {vn}", "VIRGIN ISLANDS (USA) : {vi}", 
         "WALLIS AND FUTUNA ISLANDS : {wf}", "WESTERN SAHARA : {eh}",            
         "YEMEN : {ye}",
-        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"
-                ], multi_select=True, show_multi_select_hint=True,)
-            
+        "ZAMBIA : {zm}", "ZIMBABWE : {zw}"], multi_select=True, show_multi_select_hint=True)
+
             menu_entry_indices = terminal_menu.show()
             print(colored('\nYour Exclude Nodes Configuration : \n', 'magenta'))
             print(terminal_menu.chosen_menu_entries)
+
             fichier = open("data/torrc.config", "a")
             fichier.write(str(('\nExcludeNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
+            fichier.write(' StrictNodes 1')
             fichier.close()
+
             anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
             Entry_Exit_Exclude()
     
     
     def Start_Torrc_Config():
+
+        bash_Shifting = """\
+            sudo mv -n /etc/tor/torrc /etc/tor/torrc.original
+            sudo mv data/torrc.config /etc/tor/torrc
+            cp data/torrc.start data/torrc.config"""
+
         subprocess.call(['clear'], shell=True)
         print(colored(Start_Tor_Banner, 'magenta'))
-        subprocess.call(['./bash_cmd/Shifting.sh'] , shell=True)
+
+        subprocess.call(bash_Shifting, shell=True)
         print(colored('[+] Configuration file is on : /etc/tor ', 'green'))
         print(colored('[+] Now go to the menu to launch Tor', 'green'))
+
         anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
         Entry_Exit_Exclude()
 
     
     def Remove_Torrc_Config():
+
+        bash_Remove_Torrc = """\
+            sudo mv /etc/tor/torrc.original /etc/tor/torrc"""
+
         subprocess.call(['clear'])
         print(colored(Entry_Nodes_Banner, 'magenta'))
-        subprocess.call(['./bash_cmd/Remove_Torrc.sh'], shell=True)
+
+        subprocess.call(bash_Remove_Torrc, shell=True)
         print(colored('[+] Configuration file is Remove ...', 'green'))
+
         anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
         Entry_Exit_Exclude()
-
 
     subprocess.call(['clear'], shell=True)
     Entry_Exit_Exclude()
 
 
 def Check_IP():
+
+    bash_Test_Tor = """\
+        export red="$(tput setaf 1)"
+        export green="$(tput setaf 2)"
+        export reset="$(tput sgr0)"
+
+        die() 
+        {
+            printf "${red}%s${reset}\\n" "[!] $@" >&2
+            exit 1
+        }
+
+        msg() 
+        {
+            printf "${b}${green}%s${reset} %s\\n\\n" "[OK]" "${@}"
+        }
+
+        if systemctl is-active tor.service >/dev/null 2>&1; then
+                msg "Tor service is active"
+            else
+                die "Tor service is not running!"
+            fi"""
+
     subprocess.call(['clear'], shell=True)
     print(colored(Check_IP_Banner, 'magenta'))
+
     print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(['./bash_cmd/Test_Tor.sh'], shell=True)
+    subprocess.call(bash_Test_Tor, shell=True)
     print(colored('\n[+] Checking IP ...\n', 'green'))
     print(colored(requests.get('http://httpbin.org/ip').text, 'green'))
+
     anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
     subprocess.call(['clear'], shell=True)
     MainMenu()
 
 
 def Relay_Information():
+    
+    bash_Relay_Information = """\
+        sudo nyx -s /var/run/tor/control"""
+
     subprocess.call(['clear'], shell=True)
-    subprocess.call(['./bash_cmd/Relay_Information.sh'], shell=True)
+    subprocess.call(bash_Relay_Information, shell=True)
     subprocess.call(['clear'], shell=True)
     MainMenu()
 
 def Search_Onion():
-    
-    # Dark Search
 
     subprocess.call(['clear'], shell=True)
     print(colored(Search_Onion_Banner, 'magenta'))
-    print('\n')
+
     print(colored('To put a space between two words use : %20', 'yellow'))
     XQuery = input(colored("Please set your query : ", 'yellow'))
     print('\n')
 
     r = requests.get('http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery)
+
     data_json = r.text
+
     json_data = json.loads(data_json)
 
-    #pages = json_data['last_page']
-    #print(pages)
+    pages = json_data['last_page']
+
     for p in range(1,20):
+
         for i in range(0,2):
+
             try:
+
                 url = 'http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery + '&page=' + str(p)
+
                 r = requests.get(url)
+
                 data_json = r.text
+
                 json_data = json.loads(data_json)
+
                 print(colored(json_data['data'][i]['link'], 'green'))
+
             except Exception as excep:
                 print(excep)
-    
+
     anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
     subprocess.call(['clear'], shell=True)
     MainMenu()               
 
 
 def Quit():
+
     subprocess.call(['clear'], shell=True)
     exit()
 
 
-Search_Onion_Banner = r'''
-   _____                      __        ____        _           
-  / ___/___  ____ ___________/ /_      / __ \____  (_)___  ____ 
-  \__ \/ _ \/ __ `/ ___/ ___/ __ \    / / / / __ \/ / __ \/ __ \
- ___/ /  __/ /_/ / /  / /__/ / / /  _/ /_/ / / / / / /_/ / / / /
-/____/\___/\__,_/_/   \___/_/ /_/  (_)____/_/ /_/_/\____/_/ /_/ 
-'''                                                                
-
 Main_Menu_Banner = r'''
-    ___    ____   ____         ______          
-   /   |  / / /  /  _/___     /_  __/___  _____
-  / /| | / / /   / // __ \     / / / __ \/ ___/
- / ___ |/ / /  _/ // / / /    / / / /_/ / /    
-/_/  |_/_/_/  /___/_/ /_/    /_/  \____/_/     
-Twitter : @JeremGuillermin
+
+   ▄████████ ███▄▄▄▄    ▄██████▄  ███▄▄▄▄     ▄▄▄▄███▄▄▄▄      ▄████████ 
+  ███    ███ ███▀▀▀██▄ ███    ███ ███▀▀▀██▄ ▄██▀▀▀███▀▀▀██▄   ███    ███ 
+  ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    █▀  
+  ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███  ▄███▄▄▄     
+▀███████████ ███   ███ ███    ███ ███   ███ ███   ███   ███ ▀▀███▀▀▀     
+  ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    █▄  
+  ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    ███ 
+  ███    █▀   ▀█   █▀   ▀██████▀   ▀█   █▀   ▀█   ███   █▀    ██████████ 
+                                              twitter : @JeremGuillermin                                                                         
 '''
 
 Entry_Nodes_Banner = r'''
@@ -386,6 +476,14 @@ Check_IP_Banner = r'''
  / /   / __ \/ _ \/ ___/ //_/   / // /_/ /
 / /___/ / / /  __/ /__/ ,<    _/ // ____/ 
 \____/_/ /_/\___/\___/_/|_|  /___/_/      
-'''                                          
+'''
+
+Search_Onion_Banner = r'''
+   _____                      __        ____        _           
+  / ___/___  ____ ___________/ /_      / __ \____  (_)___  ____ 
+  \__ \/ _ \/ __ `/ ___/ ___/ __ \    / / / / __ \/ / __ \/ __ \
+ ___/ /  __/ /_/ / /  / /__/ / / /  _/ /_/ / / / / / /_/ / / / /
+/____/\___/\__,_/_/   \___/_/ /_/  (_)____/_/ /_/_/\____/_/ /_/ 
+'''
 
 MainMenu()
