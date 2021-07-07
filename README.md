@@ -1,7 +1,7 @@
 # Anonme
 This tool allows you to route all your network traffic through Tor. You can choose which countries you want to enter, exit, and which ones you want to exclude. Tool developed for Debian
 
-![Capture d’écran du 2021-07-07 03-40-04](https://user-images.githubusercontent.com/85474922/124687423-2419c100-ded5-11eb-9d0b-ac849ea5d059.png)
+![Capture d’écran du 2021-07-07 03-42-39](https://user-images.githubusercontent.com/85474922/124687559-6cd17a00-ded5-11eb-8533-7f5fd87467ab.png)
 
 # Functions
  - Chose your Tor Configuration
