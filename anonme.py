@@ -11,7 +11,7 @@ def MainMenu():
     subprocess.call(['clear'])
     print(colored(Main_Menu_Banner, 'magenta'))
     
-    print(colored('1. Check your IP ', 'yellow'))
+    print(colored('\n1. Check your IP ', 'yellow'))
     print(colored('2. Start all in Tor', 'yellow'))
     print(colored('3. Back to the Clearnet', 'yellow'))
     print(colored('4. Chose your Tor Configuration', 'yellow'))
@@ -20,10 +20,10 @@ def MainMenu():
     print(colored('7. Quit\n', 'yellow'))
     
     while True:
-    
+
         try:
     
-            selection = int(input("Enter Choice : "))
+            selection = int(input(colored("Enter Choice : ", 'magenta')))
     
             if selection == 1:
                 Check_IP()
@@ -54,11 +54,11 @@ def MainMenu():
                 break
     
             else:
-                print(colored('\nInvalide choise. Enter 1-7', 'red'))
+                print(colored('\nInvalide choise. Enter 1-9', 'red'))
                 MainMenu()
     
         except ValueError:
-            print(colored('\nInvalide choise. Enter 1-7', 'red'))
+            print(colored('\nInvalide choise. Enter 1-9', 'red'))
     
     exit
 
@@ -97,7 +97,7 @@ def Start_Tor():
     print(colored('\n[+] Tor Service is On ...', 'green'))
     
     print('\r\n')
-    anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
+    anykay = input(colored("Enter anything to return to main menu : ", 'magenta'))
     MainMenu()
 
 
@@ -115,7 +115,7 @@ def Stop_Tor():
     print(colored('\n[+] Tor service is OFF ...', 'green'))
     
     print('\r\n')
-    anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
+    anykay = input(colored("Enter anything to return to main menu : ", 'magenta'))
     subprocess.call(['clear'], shell=True)
     MainMenu()
 
@@ -138,7 +138,7 @@ def Torrc_Configuration():
 
             try:
 
-                selection = int(input("Enter Choice : "))
+                selection = int(input(colored("Enter Choice : ", 'magenta')))
 
                 if selection == 1:
                     Entry_Nodes()
@@ -209,7 +209,7 @@ def Torrc_Configuration():
             fichier.write(' StrictNodes 1')
             fichier.close()
 
-            anykay = input(colored("Enter anything to return to configuration menu : ", 'yellow'))
+            anykay = input(colored("Enter anything to return to configuration menu : ", 'magenta'))
             Entry_Exit_Exclude()        
 
     
@@ -251,7 +251,7 @@ def Torrc_Configuration():
             fichier.write(' StrictNodes 1')
             fichier.close()  
 
-            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
+            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'magenta'))
             Entry_Exit_Exclude()
 
     
@@ -292,7 +292,7 @@ def Torrc_Configuration():
             fichier.write(str(('\nExcludeNodes ' + ",".join([item.split(" : ")[1] for item in terminal_menu.chosen_menu_entries]))))
             fichier.close()
 
-            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
+            anykay = input(colored("\nEnter anything to return to configuration menu : ", 'magenta'))
             Entry_Exit_Exclude()
     
     
@@ -315,7 +315,7 @@ def Torrc_Configuration():
         print(colored('[+] Configuration file is on : /etc/tor ', 'green'))
         print(colored('[+] Now go to the menu to launch Tor', 'green'))
 
-        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
+        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'magenta'))
         Entry_Exit_Exclude()
 
     
@@ -330,7 +330,7 @@ def Torrc_Configuration():
         subprocess.call(bash_Remove_Torrc, shell=True)
         print(colored('[+] Configuration file is Remove ...', 'green'))
 
-        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'yellow'))
+        anykay = input(colored("\nEnter anything to return to configuration menu : ", 'magenta'))
         Entry_Exit_Exclude()
 
     subprocess.call(['clear'], shell=True)
@@ -339,37 +339,13 @@ def Torrc_Configuration():
 
 def Check_IP():
 
-    bash_Test_Tor = """\
-        export red="$(tput setaf 1)"
-        export green="$(tput setaf 2)"
-        export reset="$(tput sgr0)"
-
-        die() 
-        {
-            printf "${red}%s${reset}\\n" "[!] $@" >&2
-            exit 1
-        }
-
-        msg() 
-        {
-            printf "${b}${green}%s${reset} %s\\n\\n" "[OK]" "${@}"
-        }
-
-        if systemctl is-active tor.service >/dev/null 2>&1; then
-                msg "Tor service is active"
-            else
-                die "Tor service is not running!"
-            fi"""
-
     subprocess.call(['clear'], shell=True)
     print(colored(Check_IP_Banner, 'magenta'))
 
-    print(colored('\n[+] Checking TOR... ', 'green' ))
-    subprocess.call(bash_Test_Tor, shell=True)
-    print(colored('\n[+] Checking IP ...\n', 'green'))
-    print(colored(requests.get('http://httpbin.org/ip').text, 'green'))
+    print(colored('\n[+] Checking IP ...', 'green'))
+    print(requests.get('https://ipleak.net/json/').text)
 
-    anykay = input(colored("\nEnter anything to return to main menu : ", 'yellow'))
+    anykay = input(colored("\nEnter anything to return to main menu : ", 'magenta'))
     subprocess.call(['clear'], shell=True)
     MainMenu()
 
@@ -394,39 +370,30 @@ def Search_Onion():
     print('\n')
 
     r = requests.get('http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery)
-
     data_json = r.text
-
     json_data = json.loads(data_json)
-
     pages = json_data['last_page']
 
-    for p in range(1,20):
-
+    for p in range(1, pages):
         for i in range(0,2):
 
             try:
 
                 url = 'http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery + '&page=' + str(p)
-
                 r = requests.get(url)
-
                 data_json = r.text
-
                 json_data = json.loads(data_json)
-
                 print(colored(json_data['data'][i]['link'], 'green'))
 
             except Exception as excep:
                 print(excep)
 
-    anykay = input(colored("Enter anything to return to main menu : ", 'yellow'))
+    anykay = input(colored("Enter anything to return to main menu : ", 'magenta'))
     subprocess.call(['clear'], shell=True)
     MainMenu()               
 
 
 def Quit():
-
     subprocess.call(['clear'], shell=True)
     exit()
 
@@ -442,6 +409,7 @@ Main_Menu_Banner = r'''
   ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    ███ 
   ███    █▀   ▀█   █▀   ▀██████▀   ▀█   █▀   ▀█   ███   █▀    ██████████ 
                                               twitter : @JeremGuillermin                                                                         
+________________________________________________________________________
 '''
 
 Entry_Nodes_Banner = r'''
@@ -451,6 +419,7 @@ Entry_Nodes_Banner = r'''
 / /___/ /_/ / / / / __/ / /_/ / /_/ / /  / /_/ / /_/ / /_/ / / / /
 \____/\____/_/ /_/_/ /_/\__, /\__,_/_/   \__,_/\__/_/\____/_/ /_/ 
                        /____/                                     
+__________________________________________________________________
 '''
 
 Start_Tor_Banner = r'''
@@ -459,6 +428,7 @@ Start_Tor_Banner = r'''
   \__ \/ __/ __ `/ ___/ __/    / / / __ \/ ___/
  ___/ / /_/ /_/ / /  / /_     / / / /_/ / /    
 /____/\__/\__,_/_/   \__/    /_/  \____/_/                                                    
+_______________________________________________
 '''
 
 Stop_Tor_Banner = r'''
@@ -468,6 +438,7 @@ Stop_Tor_Banner = r'''
  ___/ / /_/ /_/ / /_/ /    / / / /_/ / /    
 /____/\__/\____/ .___/    /_/  \____/_/     
               /_/                           
+____________________________________________
 '''
 
 Check_IP_Banner = r'''
@@ -476,6 +447,7 @@ Check_IP_Banner = r'''
  / /   / __ \/ _ \/ ___/ //_/   / // /_/ /
 / /___/ / / /  __/ /__/ ,<    _/ // ____/ 
 \____/_/ /_/\___/\___/_/|_|  /___/_/      
+__________________________________________
 '''
 
 Search_Onion_Banner = r'''
@@ -484,6 +456,15 @@ Search_Onion_Banner = r'''
   \__ \/ _ \/ __ `/ ___/ ___/ __ \    / / / / __ \/ / __ \/ __ \
  ___/ /  __/ /_/ / /  / /__/ / / /  _/ /_/ / / / / / /_/ / / / /
 /____/\___/\__,_/_/   \___/_/ /_/  (_)____/_/ /_/_/\____/_/ /_/ 
+________________________________________________________________
 '''
 
 MainMenu()
+
+
+# Test IP Leak
+
+#https://ipleak.net/json/
+#https://api.myip.com/
+#https://ipinfo.io/
+#http://ip-api.com/
