@@ -343,7 +343,7 @@ def Check_IP():
     print(colored(Check_IP_Banner, 'magenta'))
 
     print(colored('\n[+] Checking IP ...', 'green'))
-    print(requests.get('https://ipleak.net/json/').text)
+    print(requests.get('https://ipinfo.io/').text)
 
     anykay = input(colored("\nEnter anything to return to main menu : ", 'magenta'))
     subprocess.call(['clear'], shell=True)
@@ -460,11 +460,3 @@ ________________________________________________________________
 '''
 
 MainMenu()
-
-
-# Test IP Leak
-
-#https://ipleak.net/json/
-#https://api.myip.com/
-#https://ipinfo.io/
-#http://ip-api.com/
