@@ -16,7 +16,7 @@ sudo, tor, iptables, nyx
 python3 : subprocess, simple-term-menu, termcolor, requests
 
 # Install
-git clone https://github.com/D4rkRevan/anonme
+git clone https://github.com/jeremyguillermin/anonme
 
 cd anonme
 
