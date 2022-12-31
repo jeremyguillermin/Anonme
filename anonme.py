@@ -15,9 +15,8 @@ def MainMenu():
     print(colored('2. Start all in Tor', 'yellow'))
     print(colored('3. Back to the Clearnet', 'yellow'))
     print(colored('4. Chose your Tor Configuration', 'yellow'))
-    print(colored('5. Use Tor and Search .Onion link', 'yellow'))
-    print(colored('6. Information about your relay (press q to quit)', 'yellow'))
-    print(colored('7. Quit\n', 'yellow'))
+    print(colored('5. Information about your relay (press q to quit)', 'yellow'))
+    print(colored('6. Quit\n', 'yellow'))
     
     while True:
 
@@ -42,14 +41,10 @@ def MainMenu():
                 break
     
             elif selection == 5:
-                Search_Onion()
-                break
-    
-            elif selection == 6:
                 Relay_Information()
                 break
     
-            elif selection == 7:
+            elif selection == 6:
                 Quit()
                 break
     
@@ -358,38 +353,6 @@ def Relay_Information():
     subprocess.call(['clear'], shell=True)
     subprocess.call(bash_Relay_Information, shell=True)
     subprocess.call(['clear'], shell=True)
-    MainMenu()
-
-def Search_Onion():
-
-    subprocess.call(['clear'], shell=True)
-    print(colored(Search_Onion_Banner, 'magenta'))
-
-    print(colored('To put a space between two words use : %20', 'yellow'))
-    XQuery = input(colored("Please set your query : ", 'yellow'))
-    print('\n')
-
-    r = requests.get('http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery)
-    data_json = r.text
-    json_data = json.loads(data_json)
-    pages = json_data['last_page']
-
-    for p in range(1, pages):
-        for i in range(0,2):
-
-            try:
-
-                url = 'http://darkschn4iw2hxvpv2vy2uoxwkvs2padb56t3h4wqztre6upoc5qwgid.onion/api/search?query=' + XQuery + '&page=' + str(p)
-                r = requests.get(url)
-                data_json = r.text
-                json_data = json.loads(data_json)
-                print(colored(json_data['data'][i]['link'], 'green'))
-
-            except Exception as excep:
-                print(excep)
-
-    anykay = input(colored("Enter anything to return to main menu : ", 'magenta'))
-    subprocess.call(['clear'], shell=True)
     MainMenu()               
 
 
@@ -408,7 +371,7 @@ Main_Menu_Banner = r'''
   ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    █▄  
   ███    ███ ███   ███ ███    ███ ███   ███ ███   ███   ███   ███    ███ 
   ███    █▀   ▀█   █▀   ▀██████▀   ▀█   █▀   ▀█   ███   █▀    ██████████ 
-                                              twitter : @JeremGuillermin                                                                         
+                                                                                                                    
 ________________________________________________________________________
 '''
 
@@ -448,15 +411,6 @@ Check_IP_Banner = r'''
 / /___/ / / /  __/ /__/ ,<    _/ // ____/ 
 \____/_/ /_/\___/\___/_/|_|  /___/_/      
 __________________________________________
-'''
-
-Search_Onion_Banner = r'''
-   _____                      __        ____        _           
-  / ___/___  ____ ___________/ /_      / __ \____  (_)___  ____ 
-  \__ \/ _ \/ __ `/ ___/ ___/ __ \    / / / / __ \/ / __ \/ __ \
- ___/ /  __/ /_/ / /  / /__/ / / /  _/ /_/ / / / / / /_/ / / / /
-/____/\___/\__,_/_/   \___/_/ /_/  (_)____/_/ /_/_/\____/_/ /_/ 
-________________________________________________________________
 '''
 
 MainMenu()
