@@ -1,6 +1,6 @@
 # Anonme
 
-Anonme est un outil open source écrit en Python conçu pour préserver l'anonymat des utilisateurs tout en conservant les informations nécessaires pour l'analyse des logs.
+Anonme est un outil open source écrit en Python conçu pour préserver l'anonymat.
 
 # Exigences spécifiques pour fonctionner 
 Il a besoin de sudo, tor, iptables et nyx pour être exécuté correctement. Python 3 avec subprocess, simple-term-menu, termcolor et requests.
