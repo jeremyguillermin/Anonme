@@ -1,10 +1,6 @@
 # Anonme
 
-Anonme est un outil open source écrit en Python conçu pour préserver l'anonymat des utilisateurs tout en conservant les informations nécessaires pour l'analyse des logs. Il permet de remplacer les noms d'utilisateurs, les adresses IP et les emails dans des fichiers de logs par des pseudonymes générés aléatoirement.
-
-Anonme prend en entrée des fichiers de logs au format CSV et génère en sortie des fichiers de logs anonymisés. L'outil offre une grande flexibilité et permet aux utilisateurs de personnaliser les champs à anonymiser en modifiant le fichier de configuration. Il peut être utilisé pour anonymiser les fichiers de logs des serveurs web, des applications mobiles et des jeux en ligne.
-
-Anonme est distribué sous licence MIT et est entièrement gratuit. Le projet est encore en développement et les contributions sont les bienvenues. Si vous avez des suggestions ou des commentaires, n'hésitez pas à ouvrir une issue sur GitHub.
+Anonme est un outil open source écrit en Python conçu pour préserver l'anonymat des utilisateurs tout en conservant les informations nécessaires pour l'analyse des logs.
 
 # Exigences spécifiques pour fonctionner 
 Il a besoin de sudo, tor, iptables et nyx pour être exécuté correctement. Python 3 avec subprocess, simple-term-menu, termcolor et requests.
