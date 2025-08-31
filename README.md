@@ -1,6 +1,6 @@
-# TwixBack - Outil de Gestion Tor
+# Anonme - Outil de Gestion Tor
 
-TwixBack est un script Python en ligne de commande conçu pour simplifier la gestion du réseau Tor sur les systèmes Linux. Il fournit une interface textuelle simple pour router l'ensemble du trafic système à travers Tor, vérifier son anonymat, et personnaliser la configuration des circuits Tor.
+Anonme est un script Python en ligne de commande conçu pour simplifier la gestion du réseau Tor sur les systèmes Linux. Il fournit une interface textuelle simple pour router l'ensemble du trafic système à travers Tor, vérifier son anonymat, et personnaliser la configuration des circuits Tor.
 
 ---
 
